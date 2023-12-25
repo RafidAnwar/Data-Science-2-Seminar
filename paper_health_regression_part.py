@@ -16,12 +16,9 @@ Reason for exclusion:
 1. age selected between 1 to 18. As below 1 year, puppies do not have fixed feeding frequency compared to adults and 
    above 18 years older dogs there are outliers
 2. only neutered dogs are considered as almost 95% were spayed.
-3. Also exlcuded dogs which didnt have a consistent feeding frequency at all as we want to analyze the effect of 
-   frequency
 """
 
-clean = (exp_df["dd_age_years"] >= 1) & (exp_df["dd_age_years"] < 18) & (exp_df['dd_spayed_or_neutered'] == True) & (
-        exp_df['df_diet_consistency'] != 3)
+clean = (exp_df["dd_age_years"] >= 1) & (exp_df["dd_age_years"] < 18) & (exp_df['dd_spayed_or_neutered'] == True)
 data = exp_df[clean]
 print(data.head())
 
@@ -58,13 +55,9 @@ Cleaning the data:
 for col in disease_column:
   clean = (data[col] != 1) & (data[col] != 3)
   disease= data[clean]
-  disease[col] = disease[col].map(lambda x: 0 if x == 0 else 1) #converting the gastrointestinal data to binary 0 and 1, 0= not affected and 1= affected
+  disease[col] = disease[col].map(lambda x: 0 if x == 0 else 1) #converting the disease data to binary 0 and 1, 0= not affected and 1= affected
 
-  # Now you will replace the code with your chosen variable name
-
-  disease['df_appetite'] = disease['df_appetite'].map(lambda x: 1 if x >= 2 else 0) #converting the feeding frequency data to binary 0 and 1, 0 = more freqeunt and 1 = fed once
-  # print(disease.head())
-
+  disease['df_appetite'] = disease['df_appetite'].map(lambda x: 1 if x >= 2 else 0) #converting the predicting variable data to binary 0 and 1, 1 = predicted outcome and 0 = opposite prediction
 
   import statsmodels.api as sm
   array1 =disease['df_appetite'].values
