@@ -56,7 +56,9 @@ Cleaning the data:
 an_diet = ['df_diet_consistency','df_appetite', 'df_primary_diet_component_organic','df_primary_diet_component_grain_free',    
            'df_primary_diet_component_change_recent', 'df_weight_change_last_year', 'df_treats_frequency', 'df_infrequent_supplements']
 
-def disease_func(user_choice):
+
+
+def disease_func_diet(user_choice):
   clean = (data[user_choice] != 1) & (data[user_choice] != 3)
   disease= data[clean]
   disease[user_choice] = disease[user_choice].map(lambda x: 0 if x == 0 else 1) #converting the disease data to binary 0 and 1, 0= not affected and 1= affected
@@ -77,7 +79,7 @@ def disease_func(user_choice):
     elif variable == 'df_treats_frequency':
       disease[variable] = disease[variable].map(lambda x: 0 if x ==1 or x==4  else 1) # 0 indicates for poor treat frequency to the dogs and 1 stand for moderate treat frequency
     elif variable == 'df_infrequent_supplements':
-      disease[variable] = disease[variable].map(lambda x: 0 if x ==False  else 1)
+      disease[variable] = disease[variable].map(lambda x: 0 if x == False  else 1)
 
     import statsmodels.api as sm
 
@@ -106,6 +108,57 @@ def disease_func(user_choice):
     print(f'Confidence Interval: [{conf_interval[0]:.4f}, {conf_interval[1]:.4f}]')
     print(f'p-value:', result.pvalues.loc['exposure_group'])
     
+#def disease_funtion Physical activities
+
+variable_column_pa = ['pa_activity_level', 'pa_avg_activity_intensity', 'pa_swim', 'pa_physical_games_frequency',
+                      'pa_moderate_weather_sun_exposure_level', 'pa_on_leash_walk_frequency',
+                      'pa_other_aerobic_activity_frequency']
+
+def disease_func_pa(user_choice):
+  clean = (data[user_choice] != 1) & (data[user_choice] != 3)
+  disease= data[clean]
+  disease[user_choice] = disease[user_choice].map(lambda x: 0 if x == 0 else 1) #converting the disease data to binary 0 and 1, 0= not affected and 1= affected
+
+  for row in variable_column_pa:
+    if row == 'pa_swim':
+      disease[row] = disease[row].map(lambda x: 1 if x == True else 0)
+    elif row == 'pa_physical_games_frequency':
+      disease[row] = disease[row].map(lambda x: 1 if x <= 3 else 0)
+    elif row == 'pa_moderate_weather_sun_exposure_level':
+      disease[row] = disease[row].map(lambda x: 1 if x <= 2 else 0)
+    elif row == 'pa_other_aerobic_activity_frequency' or 'pa_on_leash_walk_frequency':
+      disease[row] = disease[row].map(lambda x: 1 if x >= 2 else 0)
+    else:
+      disease[row] = disease[row].map(lambda x: 0 if x == 1 else 1)
+
+    import statsmodels.api as sm
+
+    array1 =disease[row].values
+    array2 =disease[user_choice].values
+
+    data_reg = pd.DataFrame({
+      'exposure_group': array1,
+      'outcome': array2
+    })
+
+    # Create a contingency table
+    contingency_table = pd.crosstab(data_reg['exposure_group'], data_reg['outcome'])
+    
+        # Perform logistic regression
+    exog = sm.add_constant(data_reg['exposure_group'])
+    logit_model = sm.Logit(data_reg['outcome'], exog)
+    result = logit_model.fit()
+
+    # Get odds ratio and confidence interval
+    odds_ratio = np.exp(result.params[1])
+    conf_interval = np.exp(result.conf_int().iloc[1])
+
+    # Print the results
+    print(f'Odds Ratio for {user_choice} w.r.t {row}: {odds_ratio:.4f}')
+    print(f'Confidence Interval: [{conf_interval[0]:.4f}, {conf_interval[1]:.4f}]')
+    print(f'p-value:', result.pvalues.loc['exposure_group'])
+
+
 
 
 #taking user Input
@@ -113,33 +166,69 @@ def disease_func(user_choice):
 print('This is a list of Nine Disease = Gastrointestinal, Oral, Orthopedic, Kidney, Liver, Cardiac, Skin, Neurological, Cancer')
 user_choice_1 = input('What Disease You want to know about:  ')
 
-print('This is a four area you could know about = Physical_activity, Diet, Environement,')
+print('This is a four area you could know about = Physical_activity(PA), Diet, Environement,')
 user_choice_2 = input('What area You want to know about: ')
 
-if user_choice_1 == 'cancer' and user_choice_2 == 'diet':
-  disease_func('hs_health_conditions_cancer')
+################# Diet ##########################
 
-elif 'gastro' in user_choice_1 and user_choice_2 == 'diet':
-  disease_func('hs_health_conditions_gastrointestinal')
+if user_choice_1 == 'cancer' and user_choice_2 == 'diet':
+  disease_func_diet('hs_health_conditions_cancer')
+
+elif user_choice_1 == 'gastrointestinal' and user_choice_2 == 'diet':
+  disease_func_diet('hs_health_conditions_gastrointestinal')
 
 elif 'skin' in user_choice_1 and user_choice_2 == 'diet':
-  disease_func('hs_health_conditions_skin')
+  disease_func_diet('hs_health_conditions_skin')
 
 elif 'oral' in user_choice_1 and user_choice_2 == 'diet':
-  disease_func('hs_health_conditions_oral')
+  disease_func_diet('hs_health_conditions_oral')
 
 elif 'neuro' in user_choice_1 and user_choice_2 == 'diet':
-  disease_func('hs_health_conditions_neurological')
+  disease_func_diet('hs_health_conditions_neurological')
 
 elif 'kidney' in user_choice_1 and user_choice_2 == 'diet':
-  disease_func('hs_health_conditions_kidney')
+  disease_func_diet('hs_health_conditions_kidney')
 
-elif 'Liver' in user_choice_1 and user_choice_2 == 'diet':
-  disease_func('hs_health_conditions_liver')
+elif 'liver' in user_choice_1 and user_choice_2 == 'diet':
+  disease_func_diet('hs_health_conditions_liver')
 
-elif 'Cardiac' in user_choice_1 and user_choice_2 == 'diet':
+elif 'cardiac' in user_choice_1 and user_choice_2 == 'diet':
+  disease_func_diet('hs_health_conditions_cardiac')
 
-  disease_func('hs_health_conditions_cardiac')
+elif 'orthopedic' in user_choice_1 and user_choice_2 == 'diet':
+  disease_func_diet('hs_health_conditions_orthopedic')
 
-elif 'Orthopedic' in user_choice_1 and user_choice_2 == 'diet':
-  disease_func('hs_health_conditions_orthopedic')
+else:
+  print('Please check your inputs again')
+
+############## physical activity ##################
+
+if user_choice_1 == 'cancer' and user_choice_2 == 'pa':
+  disease_func_pa('hs_health_conditions_cancer')
+
+elif user_choice_1 == 'gastrointestinal' and user_choice_2 == 'pa':
+  disease_func_pa('hs_health_conditions_gastrointestinal')
+
+elif 'skin' in user_choice_1 and user_choice_2 == 'pa':
+  disease_func_pa('hs_health_conditions_skin')
+
+elif 'oral' in user_choice_1 and user_choice_2 == 'pa':
+  disease_func_pa('hs_health_conditions_oral')
+
+elif 'neuro' in user_choice_1 and user_choice_2 == 'pa':
+  disease_func_pa('hs_health_conditions_neurological')
+
+elif 'kidney' in user_choice_1 and user_choice_2 == 'pa':
+  disease_func_pa('hs_health_conditions_kidney')
+
+elif 'liver' in user_choice_1 and user_choice_2 == 'pa':
+  disease_func_pa('hs_health_conditions_liver')
+
+elif 'cardiac' in user_choice_1 and user_choice_2 == 'pa':
+  disease_func_pa('hs_health_conditions_cardiac')
+
+elif 'orthopedic' in user_choice_1 and user_choice_2 == 'pa':
+  disease_func_pa('hs_health_conditions_orthopedic')
+  
+else:
+  print('Please check your inputs again')
