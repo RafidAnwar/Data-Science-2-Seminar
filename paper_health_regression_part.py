@@ -3,8 +3,11 @@ import numpy as np
 import warnings
 
 warnings.filterwarnings("ignore")
+import statsmodels.api as sm
 
+# dog owner csv
 df = pd.read_csv('DAP_2021_HLES_dog_owner_v1.0.csv')
+
 
 exp_df = df.set_index('dog_id')
 
@@ -55,18 +58,25 @@ def disease_func_diet(user_choice):
   for variable in an_diet:
     if variable == 'df_diet_consistency':
       disease[variable] = disease[variable].map(lambda x: 0 if x >= 3 else 1) # 1 for very consistent, 0 for Non Consitent diet
+      
     elif variable == 'df_appetite':
       disease[variable] = disease[variable].map(lambda x: 0 if x == 1  else 1) # 0 for poor appetite and 1 for good appetite
+      
     elif variable == 'df_primary_diet_component_organic':
       disease[variable] = disease[variable].map(lambda x: 0 if x == False  else 1) # 0 indicates false to the organic diet and 1 for True Organic Diet
+      
     elif variable == 'df_primary_diet_component_grain_free':
       disease[variable] = disease[variable].map(lambda x: 0 if x == False  else 1) # 0 indicates false to the grainfree diet and 1 for True Grainfree Diet
+      
     elif variable == 'df_primary_diet_component_change_recent':
       disease[variable] = disease[variable].map(lambda x: 0 if x == False  else 1) # 0 for No and 1 for yes
+      
     elif variable == 'df_weight_change_last_year':
       disease[variable] = disease[variable].map(lambda x: 0 if x == 0  else 1) # 0 incdicates no change in weight in last year and 1 stand for change in weight in last year
+      
     elif variable == 'df_treats_frequency':
       disease[variable] = disease[variable].map(lambda x: 0 if x ==1 or x==4  else 1) # 0 indicates for poor treat frequency to the dogs and 1 stand for moderate treat frequency
+      
     elif variable == 'df_infrequent_supplements':
       disease[variable] = disease[variable].map(lambda x: 0 if x == False  else 1)
 
@@ -167,9 +177,6 @@ while True:
   if user_choice_1 == 'cancer' and user_choice_2 == 'diet':
     disease_func_diet('hs_health_conditions_cancer')
 
-  elif user_choice_1 == 'gastrointestinal' and user_choice_2 == 'diet':
-    disease_func_diet('hs_health_conditions_gastrointestinal')
-
   elif 'gastro' in user_choice_1 and user_choice_2 == 'diet':
     disease_func_diet('hs_health_conditions_gastrointestinal')
   
@@ -197,8 +204,8 @@ while True:
   ############## physical activity ##################
   elif user_choice_1 == 'cancer' and user_choice_2 == 'pa':
     disease_func_pa('hs_health_conditions_cancer')
-
-  elif user_choice_1 == 'gastrointestinal' and user_choice_2 == 'pa':
+    
+  elif 'gastro' in user_choice_1 and user_choice_2 == 'pa':
     disease_func_pa('hs_health_conditions_gastrointestinal')
 
   elif 'skin' in user_choice_1 and user_choice_2 == 'pa':
