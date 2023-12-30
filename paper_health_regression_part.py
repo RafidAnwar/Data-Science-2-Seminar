@@ -1,20 +1,12 @@
 import pandas as pd
 import numpy as np
-
-import statsmodels.api as sm
-
-# dog owner csv
-df = pd.read_csv('DAP_2021_HLES_dog_owner_v1.0.csv')
-
-#  path = C:/Users/rnbds/Desktop/DS2_Repo_Rafid/Data-Science-2-Seminar/DAP_2021_HLES_dog_owner_v1.0.csv
 import warnings
+
 warnings.filterwarnings("ignore")
 
 df = pd.read_csv('DAP_2021_HLES_dog_owner_v1.0.csv')
 
-
 exp_df = df.set_index('dog_id')
-
 
 """#unwanted variables exclusion
 
@@ -26,10 +18,6 @@ Reason for exclusion:
 
 clean = (exp_df["dd_age_years"] >= 1) & (exp_df["dd_age_years"] < 18) & (exp_df['dd_spayed_or_neutered'] == True)
 data = exp_df[clean]
-
-# print(data.head())
-
-# print(data.shape)
 
 # Excluding the Sample if the Value count of any breed is less than 10
 
@@ -58,8 +46,6 @@ Cleaning the data:
 
 an_diet = ['df_diet_consistency','df_appetite', 'df_primary_diet_component_organic','df_primary_diet_component_grain_free',    
            'df_primary_diet_component_change_recent', 'df_weight_change_last_year', 'df_treats_frequency', 'df_infrequent_supplements']
-
-
 
 def disease_func_diet(user_choice):
   clean = (data[user_choice] != 1) & (data[user_choice] != 3)
@@ -151,7 +137,7 @@ def disease_func_pa(user_choice):
     # Create a contingency table
     contingency_table = pd.crosstab(data_reg['exposure_group'], data_reg['outcome'])
     
-        # Perform logistic regression
+    # Perform logistic regression
     exog = sm.add_constant(data_reg['exposure_group'])
     logit_model = sm.Logit(data_reg['outcome'], exog)
     result = logit_model.fit()
@@ -208,13 +194,8 @@ while True:
   elif 'orthopedic' in user_choice_1 and user_choice_2 == 'diet':
     disease_func_diet('hs_health_conditions_orthopedic')
 
-  else:
-    print('Please check your inputs again')
-
   ############## physical activity ##################
-
-
-  if user_choice_1 == 'cancer' and user_choice_2 == 'pa':
+  elif user_choice_1 == 'cancer' and user_choice_2 == 'pa':
     disease_func_pa('hs_health_conditions_cancer')
 
   elif user_choice_1 == 'gastrointestinal' and user_choice_2 == 'pa':
