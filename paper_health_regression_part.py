@@ -72,8 +72,8 @@ def disease_func_diet(user_choice):
 
     import statsmodels.api as sm
 
-    array1 =disease[variable].values
-    array2 =disease[user_choice].values
+    array1 = disease[variable].values
+    array2 = disease[user_choice].values
 
     data_reg = pd.DataFrame({
       'exposure_group': array1,
@@ -111,12 +111,16 @@ def disease_func_pa(user_choice):
   for row in variable_column_pa:
     if row == 'pa_swim':
       disease[row] = disease[row].map(lambda x: 1 if x == True else 0)
+      
     elif row == 'pa_physical_games_frequency':
       disease[row] = disease[row].map(lambda x: 1 if x <= 3 else 0)
+      
     elif row == 'pa_moderate_weather_sun_exposure_level':
       disease[row] = disease[row].map(lambda x: 1 if x <= 2 else 0)
+      
     elif row == 'pa_other_aerobic_activity_frequency' or 'pa_on_leash_walk_frequency':
       disease[row] = disease[row].map(lambda x: 1 if x >= 2 else 0)
+      
     else:
       disease[row] = disease[row].map(lambda x: 0 if x == 1 else 1)
 
@@ -166,6 +170,9 @@ while True:
   elif user_choice_1 == 'gastrointestinal' and user_choice_2 == 'diet':
     disease_func_diet('hs_health_conditions_gastrointestinal')
 
+  elif 'gastro' in user_choice_1 and user_choice_2 == 'diet':
+    disease_func_diet('hs_health_conditions_gastrointestinal')
+  
   elif 'skin' in user_choice_1 and user_choice_2 == 'diet':
     disease_func_diet('hs_health_conditions_skin')
 
@@ -188,7 +195,6 @@ while True:
     disease_func_diet('hs_health_conditions_orthopedic')
 
   ############## physical activity ##################
-
   elif user_choice_1 == 'cancer' and user_choice_2 == 'pa':
     disease_func_pa('hs_health_conditions_cancer')
 
@@ -223,3 +229,4 @@ while True:
 
   if user_input.lower() == "yes":
     break
+
