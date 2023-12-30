@@ -5,8 +5,10 @@ import statsmodels.api as sm
 
 # dog owner csv
 #  path = C:/Users/rnbds/Desktop/DS2_Repo_Rafid/Data-Science-2-Seminar/DAP_2021_HLES_dog_owner_v1.0.csv
+import warnings
+warnings.filterwarnings("ignore")
 
-df = pd.read_csv('C:/Users/rnbds/Desktop/DS2_Repo_Rafid/Data-Science-2-Seminar/DAP_2021_HLES_dog_owner_v1.0.csv')
+df = pd.read_csv('DAP_2021_HLES_dog_owner_v1.0.csv')
 
 # print(df.shape)
 
@@ -159,76 +161,81 @@ def disease_func_pa(user_choice):
     print(f'p-value:', result.pvalues.loc['exposure_group'])
 
 
+while True:
 
+  #taking user Input
 
-#taking user Input
+  print('This is a list of Nine Disease = gastrointestinal, oral, orthopedic, kidney, liver, cardiac, skin, neurological, cancer')
+  user_choice_1 = input('What Disease You want to know about:  ')
 
-print('This is a list of Nine Disease = Gastrointestinal, Oral, Orthopedic, Kidney, Liver, Cardiac, Skin, Neurological, Cancer')
-user_choice_1 = input('What Disease You want to know about:  ')
+  print('This is a four area you could know about = Physical_activity(pa), diet, Environment,')
+  user_choice_2 = input('What area You want to know about: ')
 
-print('This is a four area you could know about = Physical_activity(PA), Diet, Environement,')
-user_choice_2 = input('What area You want to know about: ')
+  ################# Diet ##########################
 
-################# Diet ##########################
+  if user_choice_1 == 'cancer' and user_choice_2 == 'diet':
+    disease_func_diet('hs_health_conditions_cancer')
 
-if user_choice_1 == 'cancer' and user_choice_2 == 'diet':
-  disease_func_diet('hs_health_conditions_cancer')
+  elif user_choice_1 == 'gastrointestinal' and user_choice_2 == 'diet':
+    disease_func_diet('hs_health_conditions_gastrointestinal')
 
-elif user_choice_1 == 'gastrointestinal' and user_choice_2 == 'diet':
-  disease_func_diet('hs_health_conditions_gastrointestinal')
+  elif 'skin' in user_choice_1 and user_choice_2 == 'diet':
+    disease_func_diet('hs_health_conditions_skin')
 
-elif 'skin' in user_choice_1 and user_choice_2 == 'diet':
-  disease_func_diet('hs_health_conditions_skin')
+  elif 'oral' in user_choice_1 and user_choice_2 == 'diet':
+    disease_func_diet('hs_health_conditions_oral')
 
-elif 'oral' in user_choice_1 and user_choice_2 == 'diet':
-  disease_func_diet('hs_health_conditions_oral')
+  elif 'neuro' in user_choice_1 and user_choice_2 == 'diet':
+    disease_func_diet('hs_health_conditions_neurological')
 
-elif 'neuro' in user_choice_1 and user_choice_2 == 'diet':
-  disease_func_diet('hs_health_conditions_neurological')
+  elif 'kidney' in user_choice_1 and user_choice_2 == 'diet':
+    disease_func_diet('hs_health_conditions_kidney')
 
-elif 'kidney' in user_choice_1 and user_choice_2 == 'diet':
-  disease_func_diet('hs_health_conditions_kidney')
+  elif 'liver' in user_choice_1 and user_choice_2 == 'diet':
+    disease_func_diet('hs_health_conditions_liver')
 
-elif 'liver' in user_choice_1 and user_choice_2 == 'diet':
-  disease_func_diet('hs_health_conditions_liver')
+  elif 'cardiac' in user_choice_1 and user_choice_2 == 'diet':
+    disease_func_diet('hs_health_conditions_cardiac')
 
-elif 'cardiac' in user_choice_1 and user_choice_2 == 'diet':
-  disease_func_diet('hs_health_conditions_cardiac')
+  elif 'orthopedic' in user_choice_1 and user_choice_2 == 'diet':
+    disease_func_diet('hs_health_conditions_orthopedic')
 
-elif 'orthopedic' in user_choice_1 and user_choice_2 == 'diet':
-  disease_func_diet('hs_health_conditions_orthopedic')
+  else:
+    print('Please check your inputs again')
 
-else:
-  print('Please check your inputs again')
+  ############## physical activity ##################
 
-############## physical activity ##################
+  if user_choice_1 == 'cancer' and user_choice_2 == 'pa':
+    disease_func_pa('hs_health_conditions_cancer')
 
-if user_choice_1 == 'cancer' and user_choice_2 == 'pa':
-  disease_func_pa('hs_health_conditions_cancer')
+  elif user_choice_1 == 'gastrointestinal' and user_choice_2 == 'pa':
+    disease_func_pa('hs_health_conditions_gastrointestinal')
 
-elif user_choice_1 == 'gastrointestinal' and user_choice_2 == 'pa':
-  disease_func_pa('hs_health_conditions_gastrointestinal')
+  elif 'skin' in user_choice_1 and user_choice_2 == 'pa':
+    disease_func_pa('hs_health_conditions_skin')
 
-elif 'skin' in user_choice_1 and user_choice_2 == 'pa':
-  disease_func_pa('hs_health_conditions_skin')
+  elif 'oral' in user_choice_1 and user_choice_2 == 'pa':
+    disease_func_pa('hs_health_conditions_oral')
 
-elif 'oral' in user_choice_1 and user_choice_2 == 'pa':
-  disease_func_pa('hs_health_conditions_oral')
+  elif 'neuro' in user_choice_1 and user_choice_2 == 'pa':
+    disease_func_pa('hs_health_conditions_neurological')
 
-elif 'neuro' in user_choice_1 and user_choice_2 == 'pa':
-  disease_func_pa('hs_health_conditions_neurological')
+  elif 'kidney' in user_choice_1 and user_choice_2 == 'pa':
+    disease_func_pa('hs_health_conditions_kidney')
 
-elif 'kidney' in user_choice_1 and user_choice_2 == 'pa':
-  disease_func_pa('hs_health_conditions_kidney')
+  elif 'liver' in user_choice_1 and user_choice_2 == 'pa':
+    disease_func_pa('hs_health_conditions_liver')
 
-elif 'liver' in user_choice_1 and user_choice_2 == 'pa':
-  disease_func_pa('hs_health_conditions_liver')
+  elif 'cardiac' in user_choice_1 and user_choice_2 == 'pa':
+    disease_func_pa('hs_health_conditions_cardiac')
 
-elif 'cardiac' in user_choice_1 and user_choice_2 == 'pa':
-  disease_func_pa('hs_health_conditions_cardiac')
+  elif 'orthopedic' in user_choice_1 and user_choice_2 == 'pa':
+    disease_func_pa('hs_health_conditions_orthopedic')
 
-elif 'orthopedic' in user_choice_1 and user_choice_2 == 'pa':
-  disease_func_pa('hs_health_conditions_orthopedic')
-  
-else:
-  print('Please check your inputs again')
+  else:
+    print('Please check your inputs again')
+
+  user_input = input("Do you want to stop? (yes/no): ")
+
+  if user_input.lower() == "yes":
+    break
