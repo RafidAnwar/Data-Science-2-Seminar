@@ -326,7 +326,7 @@ while True:
     user_choice_1 = input('The disease you want to know about: ')
     disease_name = user_choice_1
 
-    print('These are the available variables section = Physical_activity(pa), diet, Environment, behavior')
+    print('These are the available variables section = Physical_activity(pa), diet, environment, behavior')
     user_choice_2 = input('The variable You want to know about: ')
 
     ################# Diet ##########################
@@ -391,31 +391,31 @@ while True:
             
         ################----Environment--------#################
         
-    if user_choice_1 == 'cancer' and user_choice_2 == 'env':
+    elif user_choice_1 == 'cancer' and user_choice_2 == 'environment':
         disease_func_environment('hs_health_conditions_cancer')
 
-    elif 'gastro' in user_choice_1 and user_choice_2 == 'env':
+    elif 'gastro' in user_choice_1 and user_choice_2 == 'environment':
         disease_func_environment('hs_health_conditions_gastrointestinal')
     
-    elif 'skin' in user_choice_1 and user_choice_2 == 'env':
+    elif 'skin' in user_choice_1 and user_choice_2 == 'environment':
         disease_func_environment('hs_health_conditions_skin')
 
-    elif 'oral' in user_choice_1 and user_choice_2 == 'env':
+    elif 'oral' in user_choice_1 and user_choice_2 == 'environment':
         disease_func_environment('hs_health_conditions_oral')
 
-    elif 'neuro' in user_choice_1 and user_choice_2 == 'env':
+    elif 'neuro' in user_choice_1 and user_choice_2 == 'environment':
         disease_func_environment('hs_health_conditions_neurological')
 
-    elif 'kidney' in user_choice_1 and user_choice_2 == 'env':
+    elif 'kidney' in user_choice_1 and user_choice_2 == 'environment':
         disease_func_environment('hs_health_conditions_kidney')
 
-    elif 'liver' in user_choice_1 and user_choice_2 == 'env':
+    elif 'liver' in user_choice_1 and user_choice_2 == 'environment':
         disease_func_environment('hs_health_conditions_liver')
 
-    elif 'cardiac' in user_choice_1 and user_choice_2 == 'env':
+    elif 'cardiac' in user_choice_1 and user_choice_2 == 'environment':
         disease_func_environment('hs_health_conditions_cardiac')
 
-    elif 'orthopedic' in user_choice_1 and user_choice_2 == 'env':
+    elif 'orthopedic' in user_choice_1 and user_choice_2 == 'environment':
         disease_func_environment('hs_health_conditions_orthopedic')
 
     ############## Behavior ##################
@@ -453,4 +453,3 @@ while True:
 
     if user_input.lower() == "yes":
         break
-
