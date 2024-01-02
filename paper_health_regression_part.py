@@ -102,7 +102,7 @@ def disease_func_diet(user_choice):
     conf_interval = np.exp(result.conf_int().iloc[1])
 
     # Print the results
-    print(f'If {hypo} the odds of having {disease_name} diseases is: {odds_ratio * 100:.4f}% less!')
+    print(f'If {hypo} the odds of having {disease_name} diseases is: {(1 - odds_ratio) * 100:.4f}% less!')
     print(f'Odds Ratio for {user_choice} w.r.t {variable}: {odds_ratio:.4f}')
     print(f'Confidence Interval: [{conf_interval[0]:.4f}, {conf_interval[1]:.4f}]')
     print(f'p-value:', result.pvalues.loc['exposure_group'])
@@ -170,7 +170,7 @@ def disease_func_pa(user_choice):
         conf_interval = np.exp(result.conf_int().iloc[1])
 
         # Print the results
-        print(f'If {hypo} the odds of having {disease_name} diseases is: {odds_ratio * 100:.4f} % less!')
+        print(f'If {hypo} the likelihood of having {disease_name} diseases is: {(1 - odds_ratio) * 100:.4f} % less!')
         print(f'Odds Ratio for {user_choice} w.r.t {row}: {odds_ratio:.4f}')
         print(f'Confidence Interval: [{conf_interval[0]:.4f}, {conf_interval[1]:.4f}]')
         print(f'p-value:', result.pvalues.loc['exposure_group'])
@@ -240,7 +240,7 @@ def disease_func_behavior(user_choice):
         conf_interval = np.exp(result.conf_int().iloc[1])
 
         # Print the results
-        print(f'If {hypo} the odds of having {disease_name} diseases is: {odds_ratio *100:.4f}% less!')
+        print(f'If {hypo} the likelihood of having {disease_name} diseases is: {(1 - odds_ratio) *100:.4f}% less!')
         print(f'Odds Ratio for {user_choice} w.r.t {variable}: {odds_ratio:.4f}')
         print(f'Confidence Interval: [{conf_interval[0]:.4f}, {conf_interval[1]:.4f}]')
         print(f'p-value:', result.pvalues.loc['exposure_group'])
