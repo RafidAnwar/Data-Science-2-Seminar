@@ -102,7 +102,7 @@ def disease_func_diet(user_choice):
     conf_interval = np.exp(result.conf_int().iloc[1])
 
     # Print the results
-    print(f'If {hypo} the probability of having {disease_name} diseases is: {odds_ratio * 100:.4f}')
+    print(f'If {hypo} the odds of having {disease_name} diseases is: {odds_ratio * 100:.4f}% less!')
     print(f'Odds Ratio for {user_choice} w.r.t {variable}: {odds_ratio:.4f}')
     print(f'Confidence Interval: [{conf_interval[0]:.4f}, {conf_interval[1]:.4f}]')
     print(f'p-value:', result.pvalues.loc['exposure_group'])
@@ -121,23 +121,31 @@ def disease_func_pa(user_choice):
     for row in variable_column_pa:
         if row == 'pa_swim':
             disease[row] = disease[row].map(lambda x: 1 if x == True else 0)
-            #hypo =
+            hypo = 'dogs go to swimming'
 
         elif row == 'pa_physical_games_frequency':
             disease[row] = disease[row].map(lambda x: 1 if x <= 3 else 0)
-            #hypo =
+            hypo = "Dogs fetch items or play other games (such as Frisbee) that involve physical activity"
+
+        elif row == 'pa_avg_activity_intensity':
+            disease[row] = disease[row].map(lambda x: 0 if x == 1 else 1)
+            hypo = "over the year the average intensity level of activity included jogging and sprinting "
+
+        elif row == 'pa_activity_level':
+            disease[row] = disease[row].map(lambda x: 0 if x == 1 else 1)
+            hypo = "dog’s lifestyle over the past year has been active"
 
         elif row == 'pa_moderate_weather_sun_exposure_level':
             disease[row] = disease[row].map(lambda x: 1 if x <= 2 else 0)
-            #hypo =
+            hypo = "dog’s have good sun exposure on moderate days (40‐85 degrees Fahrenheit)"
 
-        elif row == 'pa_other_aerobic_activity_frequency' or 'pa_on_leash_walk_frequency':
-            disease[row] = disease[row].map(lambda x: 1 if x >= 2 else 0)
-            #hypo =
+        elif row == 'pa_other_aerobic_activity_frequency':
+            disease[row] = disease[row].map(lambda x: 1 if x >= 3 else 0)
+            hypo = 'dog gets other aerobic (elevated heart rate) activity more than once a week'
 
-        else:
-            disease[row] = disease[row].map(lambda x: 0 if x == 1 else 1)
-            #hypo =
+        elif row == 'pa_on_leash_walk_frequency':
+            disease[row] = disease[row].map(lambda x: 1 if x >= 3 else 0)
+            hypo = 'average frequency that your dog is active on a lead/leash is more than once a week'
 
         import statsmodels.api as sm
 
@@ -162,7 +170,7 @@ def disease_func_pa(user_choice):
         conf_interval = np.exp(result.conf_int().iloc[1])
 
         # Print the results
-        print(f'If {hypo} the probability of having {disease_name} diseases is: {odds_ratio * 100:.4f}')
+        print(f'If {hypo} the odds of having {disease_name} diseases is: {odds_ratio * 100:.4f} % less!')
         print(f'Odds Ratio for {user_choice} w.r.t {row}: {odds_ratio:.4f}')
         print(f'Confidence Interval: [{conf_interval[0]:.4f}, {conf_interval[1]:.4f}]')
         print(f'p-value:', result.pvalues.loc['exposure_group'])
@@ -232,7 +240,7 @@ def disease_func_behavior(user_choice):
         conf_interval = np.exp(result.conf_int().iloc[1])
 
         # Print the results
-        print(f'If {hypo} the probability of having {disease_name} diseases is: {odds_ratio *100:.4f}')
+        print(f'If {hypo} the odds of having {disease_name} diseases is: {odds_ratio *100:.4f}% less!')
         print(f'Odds Ratio for {user_choice} w.r.t {variable}: {odds_ratio:.4f}')
         print(f'Confidence Interval: [{conf_interval[0]:.4f}, {conf_interval[1]:.4f}]')
         print(f'p-value:', result.pvalues.loc['exposure_group'])
