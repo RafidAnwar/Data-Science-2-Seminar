@@ -3,8 +3,11 @@ import numpy as np
 import warnings
 
 warnings.filterwarnings("ignore")
+import statsmodels.api as sm
 
+# dog owner csv
 df = pd.read_csv('DAP_2021_HLES_dog_owner_v1.0.csv')
+
 
 exp_df = df.set_index('dog_id')
 
@@ -51,64 +54,63 @@ an_diet = ['df_diet_consistency', 'df_appetite', 'df_primary_diet_component_orga
 
 
 def disease_func_diet(user_choice):
-    clean = (data[user_choice] != 1) & (data[user_choice] != 3)
-    disease = data[clean]
-    disease[user_choice] = disease[user_choice].map(
-        lambda x: 0 if x == 0 else 1)  # converting the disease data to binary 0 and 1, 0= not affected and 1= affected
+  clean = (data[user_choice] != 1) & (data[user_choice] != 3)
+  disease= data[clean]
+  disease[user_choice] = disease[user_choice].map(lambda x: 0 if x == 0 else 1) #converting the disease data to binary 0 and 1, 0= not affected and 1= affected
 
-    for variable in an_diet:
-        if variable == 'df_diet_consistency':
-            disease[variable] = disease[variable].map(
-                lambda x: 0 if x >= 3 else 1)  # 1 for very consistent, 0 for Non Consitent diet
-        elif variable == 'df_appetite':
-            disease[variable] = disease[variable].map(
-                lambda x: 0 if x == 1 else 1)  # 0 for poor appetite and 1 for good appetite
-        elif variable == 'df_primary_diet_component_organic':
-            disease[variable] = disease[variable].map(
-                lambda x: 0 if x == False else 1)  # 0 indicates false to the organic diet and 1 for True Organic Diet
-        elif variable == 'df_primary_diet_component_grain_free':
-            disease[variable] = disease[variable].map(lambda
-                                                          x: 0 if x == False else 1)  # 0 indicates false to the grainfree diet and 1 for True Grainfree Diet
-        elif variable == 'df_primary_diet_component_change_recent':
-            disease[variable] = disease[variable].map(lambda x: 0 if x == False else 1)  # 0 for No and 1 for yes
-        elif variable == 'df_weight_change_last_year':
-            disease[variable] = disease[variable].map(lambda
-                                                          x: 0 if x == 0 else 1)  # 0 incdicates no change in weight in last year and 1 stand for change in weight in last year
-        elif variable == 'df_treats_frequency':
-            disease[variable] = disease[variable].map(lambda
-                                                          x: 0 if x == 1 or x == 4 else 1)  # 0 indicates for poor treat frequency to the dogs and 1 stand for moderate treat frequency
-        elif variable == 'df_infrequent_supplements':
-            disease[variable] = disease[variable].map(lambda x: 0 if x == False else 1)
+  for variable in an_diet:
+    if variable == 'df_diet_consistency':
+      disease[variable] = disease[variable].map(lambda x: 0 if x >= 3 else 1) # 1 for very consistent, 0 for Non Consitent diet
+      
+    elif variable == 'df_appetite':
+      disease[variable] = disease[variable].map(lambda x: 0 if x == 1  else 1) # 0 for poor appetite and 1 for good appetite
+      
+    elif variable == 'df_primary_diet_component_organic':
+      disease[variable] = disease[variable].map(lambda x: 0 if x == False  else 1) # 0 indicates false to the organic diet and 1 for True Organic Diet
+      
+    elif variable == 'df_primary_diet_component_grain_free':
+      disease[variable] = disease[variable].map(lambda x: 0 if x == False  else 1) # 0 indicates false to the grainfree diet and 1 for True Grainfree Diet
+      
+    elif variable == 'df_primary_diet_component_change_recent':
+      disease[variable] = disease[variable].map(lambda x: 0 if x == False  else 1) # 0 for No and 1 for yes
+      
+    elif variable == 'df_weight_change_last_year':
+      disease[variable] = disease[variable].map(lambda x: 0 if x == 0  else 1) # 0 incdicates no change in weight in last year and 1 stand for change in weight in last year
+      
+    elif variable == 'df_treats_frequency':
+      disease[variable] = disease[variable].map(lambda x: 0 if x ==1 or x==4  else 1) # 0 indicates for poor treat frequency to the dogs and 1 stand for moderate treat frequency
+      
+    elif variable == 'df_infrequent_supplements':
+      disease[variable] = disease[variable].map(lambda x: 0 if x == False  else 1)
 
-        import statsmodels.api as sm
+    import statsmodels.api as sm
 
-        array1 = disease[variable].values
-        array2 = disease[user_choice].values
+    array1 = disease[variable].values
+    array2 = disease[user_choice].values
 
-        data_reg = pd.DataFrame({
-            'exposure_group': array1,
-            'outcome': array2
-        })
+    data_reg = pd.DataFrame({
+      'exposure_group': array1,
+      'outcome': array2
+    })
 
-        # Create a contingency table
-        contingency_table = pd.crosstab(data_reg['exposure_group'], data_reg['outcome'])
+    # Create a contingency table
+    contingency_table = pd.crosstab(data_reg['exposure_group'], data_reg['outcome'])
+    
+    # Perform logistic regression
+    exog = sm.add_constant(data_reg['exposure_group'])
+    logit_model = sm.Logit(data_reg['outcome'], exog)
+    result = logit_model.fit()
 
-        # Perform logistic regression
-        exog = sm.add_constant(data_reg['exposure_group'])
-        logit_model = sm.Logit(data_reg['outcome'], exog)
-        result = logit_model.fit()
+    # Get odds ratio and confidence interval
+    odds_ratio = np.exp(result.params[1])
+    conf_interval = np.exp(result.conf_int().iloc[1])
 
-        # Get odds ratio and confidence interval
-        odds_ratio = np.exp(result.params[1])
-        conf_interval = np.exp(result.conf_int().iloc[1])
-
-        # Print the results
-        print(f'Odds Ratio for {user_choice} w.r.t {variable}: {odds_ratio:.4f}')
-        print(f'Confidence Interval: [{conf_interval[0]:.4f}, {conf_interval[1]:.4f}]')
-        print(f'p-value:', result.pvalues.loc['exposure_group'])
-
-
-# def disease_funtion Physical activities
+    # Print the results
+    print(f'Odds Ratio for {user_choice} w.r.t {variable}: {odds_ratio:.4f}')
+    print(f'Confidence Interval: [{conf_interval[0]:.4f}, {conf_interval[1]:.4f}]')
+    print(f'p-value:', result.pvalues.loc['exposure_group'])
+    
+#def disease_funtion Physical activities
 
 variable_column_pa = ['pa_activity_level', 'pa_avg_activity_intensity', 'pa_swim', 'pa_physical_games_frequency',
                       'pa_moderate_weather_sun_exposure_level', 'pa_on_leash_walk_frequency',
