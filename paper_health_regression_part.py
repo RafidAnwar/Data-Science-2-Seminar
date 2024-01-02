@@ -245,6 +245,80 @@ def disease_func_behavior(user_choice):
         print(f'Confidence Interval: [{conf_interval[0]:.4f}, {conf_interval[1]:.4f}]')
         print(f'p-value:', result.pvalues.loc['exposure_group'])
 
+########### Define disease Function for Environment######################
+
+environment = ['de_lifetime_residence_count','de_room_or_window_air_conditioning_present','de_drinking_water_is_filtered', 'de_asbestos_present', 'de_floor_types_wood',  
+               'de_routine_toys', 'de_neighborhood_has_sidewalks', 'de_neighborhood_has_parks', 'de_dogpark', 'de_recreational_spaces', 'de_sitter_or_daycare', 'de_traffic_noise_in_home_frequency']
+
+def disease_func_environment(user_choice):
+    clean = (data[user_choice] != 1) & (data[user_choice] != 3)
+    disease= data[clean]
+    disease[user_choice] = disease[user_choice].map(lambda x: 0 if x == 0 else 1) #converting the disease data to binary 0 and 1, 0= not affected and 1= affected
+    
+    for variable in environment:
+        if variable == 'de_lifetime_residence_count':
+            disease[variable] = disease[variable].map(lambda x: 1 if x <=3  else 0) #x =0 when additonal residences are more than 3, x= 1 for lesser number of additional residence
+      
+        elif variable == 'de_room_or_window_air_conditioning_present':
+            disease[variable] = disease[variable].map(lambda x: 0 if x == 0  else 1) #x =0 for no room or window air condition are x= 1 for included the room or air condition
+      
+        elif variable == 'de_drinking_water_is_filtered':
+            disease[variable] = disease[variable].map(lambda x: 1 if x == 0  else 0) #x =0 for  filtered, x = 1 for non filtered
+      
+        elif variable == 'de_asbestos_present':
+            disease[variable] = disease[variable].map(lambda x: 1 if x == 0  else 0) # x =0 for  asbestos(1,99 ), x = 1 for non asbestos(0 )
+      
+        elif variable == 'de_floor_types_wood':
+            disease[variable] = disease[variable].map(lambda x: 1 if x == True else 0) # x =0 for  non wooded, x = 1 for wooden
+      
+        elif variable == 'de_routine_toys':
+            disease[variable] = disease[variable].map(lambda x: 1 if x == True else 0) # x =0 No, x = 1 yes dog regularly lick, chew, or play with toys
+            
+        elif variable == 'de_neighborhood_has_sidewalks':
+            disease[variable] = disease[variable].map(lambda x: 1 if x != 0 else 0) # x =0 No, x = 1 yes de_neighborhood_has_sidewalks
+            
+        elif variable == 'de_neighborhood_has_parks':
+            disease[variable] = disease[variable].map(lambda x: 1 if x == True else 0) # x =0 No, x = 1 yes de_neighborhood_has_parks
+    
+        elif variable == 'de_dogpark':
+            disease[variable] = disease[variable].map(lambda x: 1 if x == True else 0) # x =0 No, x = 1 yes de_dogpark
+        
+        elif variable == 'de_recreational_spaces':
+            disease[variable] = disease[variable].map(lambda x: 0 if x == False else 1) # x =0 No, x = 1 yes de_recreational_spaces
+            
+        elif variable == 'de_sitter_or_daycare':
+            disease[variable] = disease[variable].map(lambda x: 0 if x == False else 1) # x =0 No, x = 1 yes de_sitter_or_daycare
+        
+        elif variable == 'de_traffic_noise_in_home_frequency':
+            disease[variable] = disease[variable].map(lambda x: 1 if x > 1 else 0) # x =0 No, x = 1 yes de_traffic_noise_in_home_frequency
+        
+        import statsmodels.api as sm
+
+        array1 =disease[variable].values
+        array2 =disease[user_choice].values
+
+        data_reg = pd.DataFrame({
+        'exposure_group': array1,
+        'outcome': array2
+        })
+
+        # Create a contingency table
+        contingency_table = pd.crosstab(data_reg['exposure_group'], data_reg['outcome'])
+        
+        # Perform logistic regression
+        exog = sm.add_constant(data_reg['exposure_group'])
+        logit_model = sm.Logit(data_reg['outcome'], exog)
+        result = logit_model.fit()
+
+        # Get odds ratio and confidence interval
+        odds_ratio = np.exp(result.params[1])
+        conf_interval = np.exp(result.conf_int().iloc[1])
+
+        # Print the results
+        print(f'Odds Ratio for {user_choice} w.r.t {variable}: {odds_ratio:.4f}')
+        print(f'Confidence Interval: [{conf_interval[0]:.4f}, {conf_interval[1]:.4f}]')
+        print(f'p-value:', result.pvalues.loc['exposure_group'])
+      
 while True:
     # taking user Input
     print('This is a list of available diseases = gastrointestinal, oral, orthopedic, kidney, liver, cardiac, skin, '
@@ -290,8 +364,8 @@ while True:
     ############## physical activity ##################
     elif user_choice_1 == 'cancer' and user_choice_2 == 'pa':
         disease_func_pa('hs_health_conditions_cancer')
-
-    elif user_choice_1 == 'gastrointestinal' and user_choice_2 == 'pa':
+        
+    elif 'gastro' in user_choice_1 and user_choice_2 == 'pa':
         disease_func_pa('hs_health_conditions_gastrointestinal')
 
     elif 'skin' in user_choice_1 and user_choice_2 == 'pa':
@@ -313,7 +387,36 @@ while True:
         disease_func_pa('hs_health_conditions_cardiac')
 
     elif 'orthopedic' in user_choice_1 and user_choice_2 == 'pa':
-        disease_func_pa('hs_health_conditions_orthopedic')
+            disease_func_pa('hs_health_conditions_orthopedic')
+            
+        ################----Environment--------#################
+        
+    if user_choice_1 == 'cancer' and user_choice_2 == 'env':
+        disease_func_environment('hs_health_conditions_cancer')
+
+    elif 'gastro' in user_choice_1 and user_choice_2 == 'env':
+        disease_func_environment('hs_health_conditions_gastrointestinal')
+    
+    elif 'skin' in user_choice_1 and user_choice_2 == 'env':
+        disease_func_environment('hs_health_conditions_skin')
+
+    elif 'oral' in user_choice_1 and user_choice_2 == 'env':
+        disease_func_environment('hs_health_conditions_oral')
+
+    elif 'neuro' in user_choice_1 and user_choice_2 == 'env':
+        disease_func_environment('hs_health_conditions_neurological')
+
+    elif 'kidney' in user_choice_1 and user_choice_2 == 'env':
+        disease_func_environment('hs_health_conditions_kidney')
+
+    elif 'liver' in user_choice_1 and user_choice_2 == 'env':
+        disease_func_environment('hs_health_conditions_liver')
+
+    elif 'cardiac' in user_choice_1 and user_choice_2 == 'env':
+        disease_func_environment('hs_health_conditions_cardiac')
+
+    elif 'orthopedic' in user_choice_1 and user_choice_2 == 'env':
+        disease_func_environment('hs_health_conditions_orthopedic')
 
     ############## Behavior ##################
     elif user_choice_1 == 'cancer' and user_choice_2 == 'behavior':
@@ -350,3 +453,4 @@ while True:
 
     if user_input.lower() == "yes":
         break
+
