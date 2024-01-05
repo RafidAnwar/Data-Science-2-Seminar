@@ -30,10 +30,10 @@ for value in value_counts.index:
     if value_counts[value] < 10:
         data = data[data['dd_breed_pure'] != value]
 
-"""#Regression analysis
+"""Regression analysis
 Cleaning the data:
 1. hs_health_conditions_x = 1 and 3 is excluded as they are congenital diseases and we only want to work 
-   with disease which are not congenital
+with disease which are not congenital
 """
 # define disease function for Diet
 
@@ -49,19 +49,19 @@ def disease_func_diet(user_choice):
   for variable in an_diet:
     if variable == 'df_diet_consistency':
       disease[variable] = disease[variable].map(lambda x: 0 if x >= 3 else 1) # 1 for very consistent, 0 for Non Consitent diet
-      #hypo =
+      hypo = "dog has a very consistent diet"
       
     elif variable == 'df_appetite':
       disease[variable] = disease[variable].map(lambda x: 0 if x == 1  else 1) # 0 for poor appetite and 1 for good appetite
-      #hypo =
+      hypo = 'dog shows good appetite'
       
     elif variable == 'df_primary_diet_component_organic':
       disease[variable] = disease[variable].map(lambda x: 0 if x == False  else 1) # 0 indicates false to the organic diet and 1 for True Organic Diet
-      #hypo =
+      hypo = "dog's primary diet components is organic"
       
     elif variable == 'df_primary_diet_component_grain_free':
       disease[variable] = disease[variable].map(lambda x: 0 if x == False  else 1) # 0 indicates false to the grainfree diet and 1 for True Grainfree Diet
-      #hypo =
+      #hypo = 
       
     elif variable == 'df_primary_diet_component_change_recent':
       disease[variable] = disease[variable].map(lambda x: 0 if x == False  else 1) # 0 for No and 1 for yes
