@@ -41,6 +41,7 @@ an_diet = ['df_diet_consistency', 'df_appetite', 'df_primary_diet_component_orga
            'df_primary_diet_component_grain_free',
            'df_primary_diet_component_change_recent', 'df_weight_change_last_year', 'df_treats_frequency',
            'df_infrequent_supplements']
+disease_name = 'Gastrointental'
 def disease_func_diet(user_choice):
   clean = (data[user_choice] != 1) & (data[user_choice] != 3)
   disease= data[clean]
@@ -61,23 +62,23 @@ def disease_func_diet(user_choice):
       
     elif variable == 'df_primary_diet_component_grain_free':
       disease[variable] = disease[variable].map(lambda x: 0 if x == False  else 1) # 0 indicates false to the grainfree diet and 1 for True Grainfree Diet
-      #hypo = 
+      hypo = "dog's diet is grain free"
       
     elif variable == 'df_primary_diet_component_change_recent':
-      disease[variable] = disease[variable].map(lambda x: 0 if x == False  else 1) # 0 for No and 1 for yes
-      #hypo =
+      disease[variable] = disease[variable].map(lambda x: 1 if x == True  else 0) # 0 for No and 1 for yes
+      hypo ="any recent changes made in dog's diet"
       
     elif variable == 'df_weight_change_last_year':
       disease[variable] = disease[variable].map(lambda x: 0 if x == 0  else 1) # 0 incdicates no change in weight in last year and 1 stand for change in weight in last year
-      #hypo =
+      hypo = "dog's weight varies from last year (except puppies)"
       
     elif variable == 'df_treats_frequency':
-      disease[variable] = disease[variable].map(lambda x: 0 if x ==1 or x==4  else 1) # 0 indicates for poor treat frequency to the dogs and 1 stand for moderate treat frequency
-      #hypo =
+      disease[variable] = disease[variable].map(lambda x: 0 if x ==0 or x==4  else 1) # 0 indicates for poor treat frequency to the dogs and 1 stand for moderate treat frequency
+      hypo = "owner doesnot give treat to dog atleast once a day other than dog's regular mealtime"
       
     elif variable == 'df_infrequent_supplements':
       disease[variable] = disease[variable].map(lambda x: 0 if x == False  else 1)
-      #hypo =
+      hypo = "supplements given to the dogs is infrequent"
 
     import statsmodels.api as sm
 
@@ -102,7 +103,10 @@ def disease_func_diet(user_choice):
     conf_interval = np.exp(result.conf_int().iloc[1])
 
     # Print the results
-    print(f'If {hypo} the odds of having {disease_name} diseases is: {(1 - odds_ratio) * 100:.4f}% less!')
+    if odds_ratio > 1 :
+        print(f'If {hypo} the odds of having {user_choice_1} diseases is: {(odds_ratio - 1) * 100:.4f}% more!')
+    else:
+        print(f'If {hypo} the odds of having {user_choice_1} diseases is: {(1 - odds_ratio) * 100:.4f}% less!')
     print(f'Odds Ratio for {user_choice} w.r.t {variable}: {odds_ratio:.4f}')
     print(f'Confidence Interval: [{conf_interval[0]:.4f}, {conf_interval[1]:.4f}]')
     print(f'p-value:', result.pvalues.loc['exposure_group'])
@@ -258,40 +262,51 @@ def disease_func_environment(user_choice):
     for variable in environment:
         if variable == 'de_lifetime_residence_count':
             disease[variable] = disease[variable].map(lambda x: 1 if x <=3  else 0) #x =0 when additonal residences are more than 3, x= 1 for lesser number of additional residence
-      
+            hypo = "Dogs whose Owner has less than three additional addresses in dog's lifetime "
         elif variable == 'de_room_or_window_air_conditioning_present':
             disease[variable] = disease[variable].map(lambda x: 0 if x == 0  else 1) #x =0 for no room or window air condition are x= 1 for included the room or air condition
-      
+            hypo = "Dog Owner's residence has suffiencient air conditioning"
+            
         elif variable == 'de_drinking_water_is_filtered':
-            disease[variable] = disease[variable].map(lambda x: 1 if x == 0  else 0) #x =0 for  filtered, x = 1 for non filtered
-      
+            disease[variable] = disease[variable].map(lambda x: 0 if x == 0  else 1) #x =0 for  filtered, x = 1 for non filtered
+            hypo = "drinking water on owner'residence is not filtered"
+            
         elif variable == 'de_asbestos_present':
-            disease[variable] = disease[variable].map(lambda x: 1 if x == 0  else 0) # x =0 for  asbestos(1,99 ), x = 1 for non asbestos(0 )
-      
+            disease[variable] = disease[variable].map(lambda x: 0 if x == 0  else 1) # x =0 for  asbestos(1,99 ), x = 1 for non asbestos(0 )
+            hypo = "If asbestos is present in owner's residence floor"
+            
         elif variable == 'de_floor_types_wood':
             disease[variable] = disease[variable].map(lambda x: 1 if x == True else 0) # x =0 for  non wooded, x = 1 for wooden
-      
+            hypo = "Dog Owner's residence has wooden floor"
+            
         elif variable == 'de_routine_toys':
             disease[variable] = disease[variable].map(lambda x: 1 if x == True else 0) # x =0 No, x = 1 yes dog regularly lick, chew, or play with toys
+            hypo = "dog regularly lick, chew, or play with toys"
             
         elif variable == 'de_neighborhood_has_sidewalks':
-            disease[variable] = disease[variable].map(lambda x: 1 if x != 0 else 0) # x =0 No, x = 1 yes de_neighborhood_has_sidewalks
+            disease[variable] = disease[variable].map(lambda x: 0 if x > 0 else 1) # x =0 No, x = 1 yes de_neighborhood_has_sidewalks
+            hypo = 'neighbourhood does not have many sidewalks'
             
         elif variable == 'de_neighborhood_has_parks':
             disease[variable] = disease[variable].map(lambda x: 1 if x == True else 0) # x =0 No, x = 1 yes de_neighborhood_has_parks
-    
+            hypo = "there parks or green spaces within half a mile of dog owner's home"
+            
         elif variable == 'de_dogpark':
             disease[variable] = disease[variable].map(lambda x: 1 if x == True else 0) # x =0 No, x = 1 yes de_dogpark
-        
+            hypo = 'neighbourhood has dogparks'
+            
         elif variable == 'de_recreational_spaces':
             disease[variable] = disease[variable].map(lambda x: 0 if x == False else 1) # x =0 No, x = 1 yes de_recreational_spaces
+            hypo = "there are recreational spacre in the neighbourhood"
             
         elif variable == 'de_sitter_or_daycare':
             disease[variable] = disease[variable].map(lambda x: 0 if x == False else 1) # x =0 No, x = 1 yes de_sitter_or_daycare
-        
+            hypo = "the dog's been taken to the daycare center by the owner"
+            
         elif variable == 'de_traffic_noise_in_home_frequency':
             disease[variable] = disease[variable].map(lambda x: 1 if x > 1 else 0) # x =0 No, x = 1 yes de_traffic_noise_in_home_frequency
-        
+            hypo = "the occurance of traffic noice is more frequent"
+            
         import statsmodels.api as sm
 
         array1 =disease[variable].values
@@ -315,6 +330,10 @@ def disease_func_environment(user_choice):
         conf_interval = np.exp(result.conf_int().iloc[1])
 
         # Print the results
+        if odds_ratio > 1 :
+            print(f'If {hypo} the odds of having {disease_name} diseases is: {(odds_ratio - 1) * 100:.4f}% more!')
+        else:
+            print(f'If {hypo} the odds of having {disease_name} diseases is: {(1 - odds_ratio) * 100:.4f}% less!')
         print(f'Odds Ratio for {user_choice} w.r.t {variable}: {odds_ratio:.4f}')
         print(f'Confidence Interval: [{conf_interval[0]:.4f}, {conf_interval[1]:.4f}]')
         print(f'p-value:', result.pvalues.loc['exposure_group'])
