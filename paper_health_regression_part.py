@@ -66,7 +66,7 @@ def disease_func_diet(user_choice):
       
     elif variable == 'df_primary_diet_component_change_recent':
       disease[variable] = disease[variable].map(lambda x: 1 if x == True  else 0) # 0 for No and 1 for yes
-      hypo ="any recent changes made in dog's diet"
+      hypo ="any recent changes are made in dog's diet"
       
     elif variable == 'df_weight_change_last_year':
       disease[variable] = disease[variable].map(lambda x: 0 if x == 0  else 1) # 0 incdicates no change in weight in last year and 1 stand for change in weight in last year
@@ -103,19 +103,20 @@ def disease_func_diet(user_choice):
     conf_interval = np.exp(result.conf_int().iloc[1])
 
     # Print the results
-    if odds_ratio > 1 :
-        print(f'If {hypo} the odds of having {user_choice_1} diseases is: {(odds_ratio - 1) * 100:.4f}% more!')
-    else:
-        print(f'If {hypo} the odds of having {user_choice_1} diseases is: {(1 - odds_ratio) * 100:.4f}% less!')
-    print(f'Odds Ratio for {user_choice} w.r.t {variable}: {odds_ratio:.4f}')
-    print(f'Confidence Interval: [{conf_interval[0]:.4f}, {conf_interval[1]:.4f}]')
-    print(f'p-value:', result.pvalues.loc['exposure_group'])
+    if result.pvalues.loc['exposure_group'] < 0.05:
+        if odds_ratio > 1 :
+            print(f'If {hypo} the odds of having {user_choice_1} diseases is: {(odds_ratio - 1) * 100:.4f}% more!')
+        else:
+            print(f'If {hypo} the odds of having {user_choice_1} diseases is: {(1 - odds_ratio) * 100:.4f}% less!')
+        print(f'Odds Ratio for {user_choice} w.r.t {variable}: {odds_ratio:.4f}')
+        print(f'Confidence Interval: [{conf_interval[0]:.4f}, {conf_interval[1]:.4f}]')
+        print(f'p-value:', result.pvalues.loc['exposure_group'])
     
 #define disease_funtion Physical activities
 
 variable_column_pa = ['pa_activity_level', 'pa_avg_activity_intensity', 'pa_swim', 'pa_physical_games_frequency',
                       'pa_moderate_weather_sun_exposure_level', 'pa_on_leash_walk_frequency',
-                      'pa_other_aerobic_activity_frequency']
+                      'pa_other_aerobic_activity_frequency', 'pa_moderate_weather_daily_hours_outside']
 def disease_func_pa(user_choice):
     clean = (data[user_choice] != 1) & (data[user_choice] != 3)
     disease = data[clean]
@@ -142,6 +143,10 @@ def disease_func_pa(user_choice):
         elif row == 'pa_moderate_weather_sun_exposure_level':
             disease[row] = disease[row].map(lambda x: 1 if x <= 2 else 0)
             hypo = "dog’s have good sun exposure on moderate days (40‐85 degrees Fahrenheit)"
+
+        elif row == 'pa_moderate_weather_daily_hours_outside':
+            disease[row] = disease[row].map(lambda x: 0 if x in [1, 5] else 1)
+            hypo = 'during moderate weather dogs spend less than 3 hours on average outdoors'
 
         elif row == 'pa_other_aerobic_activity_frequency':
             disease[row] = disease[row].map(lambda x: 1 if x >= 3 else 0)
@@ -174,17 +179,21 @@ def disease_func_pa(user_choice):
         conf_interval = np.exp(result.conf_int().iloc[1])
 
         # Print the results
-        print(f'If {hypo} the likelihood of having {disease_name} diseases is: {(1 - odds_ratio) * 100:.4f} % less!')
-        print(f'Odds Ratio for {user_choice} w.r.t {row}: {odds_ratio:.4f}')
-        print(f'Confidence Interval: [{conf_interval[0]:.4f}, {conf_interval[1]:.4f}]')
-        print(f'p-value:', result.pvalues.loc['exposure_group'])
+        if result.pvalues.loc['exposure_group'] < 0.05:
+            if odds_ratio > 1:
+                print(f'If {hypo} the odds of having {disease_name} diseases is: {(odds_ratio - 1) * 100:.4f}% more!')
+            else:
+                print(f'If {hypo} the odds of having {disease_name} diseases is: {(1 - odds_ratio) * 100:.4f}% less!')
+            print(f'Odds Ratio for {user_choice} w.r.t {row}: {odds_ratio:.4f}')
+            print(f'Confidence Interval: [{conf_interval[0]:.4f}, {conf_interval[1]:.4f}]')
+            print(f'p-value:', result.pvalues.loc['exposure_group'])
 
 # define disease_funtion for behavior
 
 behavior = ['db_aggression_level_food_taken_away', 'db_fear_level_bathed_at_home',
             'db_fear_level_nails_clipped_at_home', 'db_left_alone_restlessness_frequency',
             'db_urinates_alone_frequency', 'db_urinates_in_home_frequency',
-            'db_aggression_level_unknown_aggressive_dog']
+            'db_aggression_level_unknown_aggressive_dog', 'db_hyperactive_frequency']
 def disease_func_behavior(user_choice):
     clean = (data[user_choice] != 1) & (data[user_choice] != 3)
     disease = data[clean]
@@ -220,6 +229,10 @@ def disease_func_behavior(user_choice):
             disease[variable] = disease[variable].map(
                 lambda x: 0 if x >= 2 else 1)  # Less or no aggression results in less diseases
             hypo = 'dogs show Less or no aggression when approached by an unfamiliar dog'
+        elif variable == 'db_hyperactive_frequency':
+            disease[variable] = disease[variable].map(
+                lambda x: 1 if x <= 2 else 0)  # less restlessness results in less diseases
+            hypo = 'dogs are less Hyperactive,restless or has trouble settling down'
 
         import statsmodels.api as sm
 
@@ -244,10 +257,14 @@ def disease_func_behavior(user_choice):
         conf_interval = np.exp(result.conf_int().iloc[1])
 
         # Print the results
-        print(f'If {hypo} the likelihood of having {disease_name} diseases is: {(1 - odds_ratio) *100:.4f}% less!')
-        print(f'Odds Ratio for {user_choice} w.r.t {variable}: {odds_ratio:.4f}')
-        print(f'Confidence Interval: [{conf_interval[0]:.4f}, {conf_interval[1]:.4f}]')
-        print(f'p-value:', result.pvalues.loc['exposure_group'])
+        if result.pvalues.loc['exposure_group'] < 0.05:
+            if odds_ratio > 1:
+                print(f'If {hypo} the odds of having {disease_name} diseases is: {(odds_ratio - 1) * 100:.4f}% more!')
+            else:
+                print(f'If {hypo} the odds of having {disease_name} diseases is: {(1 - odds_ratio) * 100:.4f}% less!')
+            print(f'Odds Ratio for {user_choice} w.r.t {variable}: {odds_ratio:.4f}')
+            print(f'Confidence Interval: [{conf_interval[0]:.4f}, {conf_interval[1]:.4f}]')
+            print(f'p-value:', result.pvalues.loc['exposure_group'])
 
 ########### Define disease Function for Environment######################
 
@@ -330,13 +347,14 @@ def disease_func_environment(user_choice):
         conf_interval = np.exp(result.conf_int().iloc[1])
 
         # Print the results
-        if odds_ratio > 1 :
-            print(f'If {hypo} the odds of having {disease_name} diseases is: {(odds_ratio - 1) * 100:.4f}% more!')
-        else:
-            print(f'If {hypo} the odds of having {disease_name} diseases is: {(1 - odds_ratio) * 100:.4f}% less!')
-        print(f'Odds Ratio for {user_choice} w.r.t {variable}: {odds_ratio:.4f}')
-        print(f'Confidence Interval: [{conf_interval[0]:.4f}, {conf_interval[1]:.4f}]')
-        print(f'p-value:', result.pvalues.loc['exposure_group'])
+        if result.pvalues.loc['exposure_group'] < 0.05:
+            if odds_ratio > 1 :
+                print(f'If {hypo} the odds of having {disease_name} diseases is: {(odds_ratio - 1) * 100:.4f}% more!')
+            else:
+                print(f'If {hypo} the odds of having {disease_name} diseases is: {(1 - odds_ratio) * 100:.4f}% less!')
+            print(f'Odds Ratio for {user_choice} w.r.t {variable}: {odds_ratio:.4f}')
+            print(f'Confidence Interval: [{conf_interval[0]:.4f}, {conf_interval[1]:.4f}]')
+            print(f'p-value:', result.pvalues.loc['exposure_group'])
       
 while True:
     # taking user Input
