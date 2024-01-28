@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a3f31e3-49cc-4b7f-a428-8a20bd6bae60" name="Changes" comment="cslb predictio final">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+    <list default="true" id="9a3f31e3-49cc-4b7f-a428-8a20bd6bae60" name="Changes" comment="Front end addition">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CSLB Score prediction.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ctkentry_box.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/icon.ico" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/paper_health_regression_part.py" beforeDir="false" afterPath="$PROJECT_DIR$/paper_health_regression_part.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -135,7 +138,14 @@
       <option name="project" value="LOCAL" />
       <updated>1705520464659</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Front end addition">
+      <created>1705843036059</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1705843036059</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -174,6 +184,7 @@
     <MESSAGE value="updated variables and added significance value check" />
     <MESSAGE value="added cslb score prediction file" />
     <MESSAGE value="cslb predictio final" />
-    <option name="LAST_COMMIT_MESSAGE" value="cslb predictio final" />
+    <MESSAGE value="Front end addition" />
+    <option name="LAST_COMMIT_MESSAGE" value="Front end addition" />
   </component>
 </project>
