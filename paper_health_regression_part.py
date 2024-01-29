@@ -52,26 +52,26 @@ def disease_func_diet(user_choice):
     clean = (data[user_choice] != 1) & (data[user_choice] != 3)
     disease= data[clean]
     disease[user_choice] = disease[user_choice].map(lambda x: 0 if x == 0 else 1) #converting the disease data to binary 0 and 1, 0= not affected and 1= affected
-    suggestion = [f' Suggestion to minimize the effect of {disease_name} diseases : \n']
+    suggestion = [f' Suggestion to minimize the effect of {disease_name} diseases :']
     hypotheses = ['\nDetailed result of logistic regression results']
 
     for variable in an_diet:
         if variable == 'df_diet_consistency':
             disease[variable] = disease[variable].map(lambda x: 0 if x >= 3 else 1) # 1 for very consistent, 0 for Non Consitent diet
             hypo = "dog has a very consistent diet"
-            psugg = " >>Make sure your dog follows a very consistent diet!  "
+            psugg = ">>Make sure your dog follows a very consistent diet!  "
             nsugg = ">>Make sure dog's diet is not consistent!"
 
         elif variable == 'df_appetite':
             disease[variable] = disease[variable].map(lambda x: 0 if x == 1  else 1) # 0 for poor appetite and 1 for good appetite
             hypo = 'dog shows good appetite'
-            psugg = " >>Keep an eye out on your dogs appetite and make sure he has a good appetite "
+            psugg = ">>Keep an eye out on your dogs appetite and make sure he has a good appetite "
             nsugg = ">>Keep an eye out on your dogs apetite, its bad if he is always hungry"
 
         elif variable == 'df_primary_diet_component_organic':
             disease[variable] = disease[variable].map(lambda x: 0 if x == False  else 1) # 0 indicates false to the organic diet and 1 for True Organic Diet
             hypo = "dog's primary diet components is organic"
-            psugg = " >>Try to feed organic foods to your dog! "
+            psugg = ">>Try to feed organic foods to your dog! "
             nsugg = ">>Try not to feed organic foods to your dog!"
 
         elif variable == 'df_primary_diet_component_grain_free':
@@ -127,11 +127,11 @@ def disease_func_diet(user_choice):
     # Print the results
         if result.pvalues.loc['exposure_group'] < 0.05:
             if odds_ratio > 1:
-                sentence = (f'\n>>If {hypo} the odds of having {disease_name} diseases is: {(odds_ratio - 1) * 100:.4f}% more!')
+                sentence = (f'>>If {hypo} the odds of having {disease_name} diseases is: {(odds_ratio - 1) * 100:.4f}% more!')
                 hypotheses.append(sentence)
                 suggestion.append(nsugg)
             else:
-                sentence = (f'\n>>If {hypo} the odds of having {disease_name} diseases is: {(1 - odds_ratio) * 100:.4f}% less!')
+                sentence = (f'>>If {hypo} the odds of having {disease_name} diseases is: {(1 - odds_ratio) * 100:.4f}% less!')
                 hypotheses.append(sentence)
                 suggestion.append(psugg)
         else:
@@ -154,7 +154,7 @@ def disease_func_pa(user_choice):
     disease = data[clean]
     disease[user_choice] = disease[user_choice].map(
         lambda x: 0 if x == 0 else 1)  # converting the disease data to binary 0 and 1, 0= not affected and 1= affected
-    suggestion = [f' Suggestion to minimize the effect of {disease_name} diseases : \n']
+    suggestion = [f' Suggestion to minimize the effect of {disease_name} diseases :']
     hypotheses = ['\nDetailed result of logistic regression results']
 
     for row in variable_column_pa:
@@ -229,11 +229,11 @@ def disease_func_pa(user_choice):
         # Print the results
         if result.pvalues.loc['exposure_group'] < 0.05:
             if odds_ratio > 1:
-                sentence = (f'\n>>If {hypo} the odds of having {disease_name} diseases is: {(odds_ratio - 1) * 100:.4f}% more!')
+                sentence = (f'>>If {hypo} the odds of having {disease_name} diseases is: {(odds_ratio - 1) * 100:.4f}% more!')
                 hypotheses.append(sentence)
                 suggestion.append(nsugg)
             else:
-                sentence = (f'\n>>If {hypo} the odds of having {disease_name} diseases is: {(1 - odds_ratio) * 100:.4f}% less!')
+                sentence = (f'>>If {hypo} the odds of having {disease_name} diseases is: {(1 - odds_ratio) * 100:.4f}% less!')
                 hypotheses.append(sentence)
                 suggestion.append(psugg)
         else:
@@ -257,7 +257,7 @@ def disease_func_behavior(user_choice):
     disease = data[clean]
     disease[user_choice] = disease[user_choice].map(
         lambda x: 0 if x == 0 else 1)  # converting the disease data to binary 0 and 1, 0= not affected and 1= affected
-    suggestion = [f' Suggestion to minimize the effect of {disease_name} diseases : \n']
+    suggestion = [f' Suggestion to minimize the effect of {disease_name} diseases :']
     hypotheses = ['\nDetailed result of logistic regression results']
 
     for variable in behavior:
@@ -340,11 +340,11 @@ def disease_func_behavior(user_choice):
         # Print the results
         if result.pvalues.loc['exposure_group'] < 0.05:
             if odds_ratio > 1:
-                sentence = (f'\n>>If {hypo} the odds of having {disease_name} diseases is: {(odds_ratio - 1) * 100:.4f}% more!')
+                sentence = (f'>>If {hypo} the odds of having {disease_name} diseases is: {(odds_ratio - 1) * 100:.4f}% more!')
                 hypotheses.append(sentence)
                 suggestion.append(nsugg)
             else:
-                sentence = (f'\n>>If {hypo} the odds of having {disease_name} diseases is: {(1 - odds_ratio) * 100:.4f}% less!')
+                sentence = (f'>>If {hypo} the odds of having {disease_name} diseases is: {(1 - odds_ratio) * 100:.4f}% less!')
                 hypotheses.append(sentence)
                 suggestion.append(psugg)
         else:
@@ -365,7 +365,7 @@ def disease_func_environment(user_choice):
     clean = (data[user_choice] != 1) & (data[user_choice] != 3)
     disease= data[clean]
     disease[user_choice] = disease[user_choice].map(lambda x: 0 if x == 0 else 1) #converting the disease data to binary 0 and 1, 0= not affected and 1= affected
-    suggestion = [f' Suggestion to minimize the effect of {disease_name} diseases : \n']
+    suggestion = [f' Suggestion to minimize the effect of {disease_name} diseases :']
     hypotheses = ['\nDetailed result of logistic regression results']
 
     for variable in environment:
@@ -379,13 +379,13 @@ def disease_func_environment(user_choice):
             disease[variable] = disease[variable].map(lambda x: 0 if x == 0  else 1) #x =0 for no room or window air condition are x= 1 for included the room or air condition
             hypo = "Dog Owner's residence has sufficient air conditioning"
             psugg = ">>Try to ensure that your residence where you will live with dog has good air conditioning"
-            nsugg = ">>Good air conditioning system is not a must to ensure dogs' health"
+            nsugg = ">>Try to ensure that your residence where you will live with dog does not have air conditioning"
 
         elif variable == 'de_drinking_water_is_filtered':
             disease[variable] = disease[variable].map(lambda x: 0 if x == 0  else 1) #x =0 for  filtered, x = 1 for non filtered
             hypo = "drinking water on owner'residence is not filtered"
             nsugg = '>>Try to ensure that your residence where you will live with dog has filtered drinking water for the dog'
-            psugg = ">>Filtered is not a must to ensure dogs' health"
+            psugg = ">>Filtered water is not a must to ensure dogs' health"
 
         elif variable == 'de_asbestos_present':
             disease[variable] = disease[variable].map(lambda x: 0 if x == 0  else 1) # x =0 for  asbestos(1,99 ), x = 1 for non asbestos(0 )
@@ -465,11 +465,11 @@ def disease_func_environment(user_choice):
             # Print the results
         if result.pvalues.loc['exposure_group'] < 0.05:
             if odds_ratio > 1:
-                sentence = (f'\n>>If {hypo} the odds of having {disease_name} diseases is: {(odds_ratio - 1) * 100:.4f}% more!')
+                sentence = (f'>>If {hypo} the odds of having {disease_name} diseases is: {(odds_ratio - 1) * 100:.4f}% more!')
                 hypotheses.append(sentence)
                 suggestion.append(nsugg)
             else:
-                sentence = (f'\n>>If {hypo} the odds of having {disease_name} diseases is: {(1 - odds_ratio) * 100:.4f}% less!')
+                sentence = (f'>>If {hypo} the odds of having {disease_name} diseases is: {(1 - odds_ratio) * 100:.4f}% less!')
                 hypotheses.append(sentence)
                 suggestion.append(psugg)
         else:
