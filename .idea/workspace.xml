@@ -6,10 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9a3f31e3-49cc-4b7f-a428-8a20bd6bae60" name="Changes" comment="Front end addition">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CSLB Score prediction.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ctkentry_box.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/icon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/paper_health_regression_part.py" beforeDir="false" afterPath="$PROJECT_DIR$/paper_health_regression_part.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +44,7 @@
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
         <option name="accountId" value="4a6547fa-3b33-4efa-b4ed-bf1e11176920" />
-        <option name="url" value="https://github.com/RafidAnwar/Data-Science-2-Seminar.git" />
+        <option name="url" value="https://github.com/RafidAnwar/Data-Science-2-Seminar_Analytic_Avengers.git" />
       </UrlAndAccount>
     </option>
   </component>
@@ -145,7 +141,14 @@
       <option name="project" value="LOCAL" />
       <updated>1705843036059</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Front end addition">
+      <created>1706569753915</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1706569753915</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
