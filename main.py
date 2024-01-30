@@ -48,7 +48,8 @@ class MainApplication(ctk.CTk):
         bottom_frame.pack(side="bottom", fill="x")
 
         # Dropdown menu for theme selection (Light, Dark, System)
-        self.theme_option = ctk.CTkOptionMenu(bottom_frame, values=["Light", "Dark", "System"],
+        self.theme_option_variable = tk.StringVar(value="Change Theme")
+        self.theme_option = ctk.CTkOptionMenu(bottom_frame,variable=self.theme_option_variable , values=["Light", "Dark", "System"],
                                               command=self.change_appearance_mode)
         self.theme_option.pack(side="right", pady=10)
 
@@ -66,21 +67,23 @@ class MainApplication(ctk.CTk):
 
     # Function to show the read me window
     def open_readme_window(self):
-        readme_text = (
-            "DAP provides tools for Cognitive Dysfunction Prediction model which predicts the dogs current state of cognitive dysfunction and Regression Analysis of diseases which gives suggestions on how to reduce the affects of a disease based on selected variables.\n"
-            "\nFollow the on-screen instructions to use each tool.\n\n"
-            "For Cognitive Dysfunction Prediction:\n"
-            "- Fill up the given questionnaire using the drop down menus.\n"
-            "- The dog weight is taken as input, kindly put your dogs weight in lbs in the box.\n"
-            "- Click submit button to get the current condition of your dogs health.\n"
-            "- You maybe asked to answer some followup questions based on our score prediction. For that kindly come back after 6 months and fill up the rest of questionnaires and click submit again to get the actual cognitive dysfunction score of your dog.\n \n"
-            "For Regression Analysis:\n"
-            "- Select a disease and a variable from the drop down menus.\n"
-            "- Click 'Get data for the desired choices'\n"
-            "- View the suggestion and detailed regression results in the results window\n\n"
-            "\nFor any assistance, contact Analytic Avengers."
-        )
-        messagebox.showinfo("README", readme_text)
+        # Create a new top-level window
+        readme_window = ctk.CTkToplevel(self)
+        readme_window.title("README")
+        readme_window.geometry("600x400")
+        readme_window.attributes('-topmost', True)
+
+        # Add a Text widget to the new window
+        text_widget = ctk.CTkTextbox(readme_window, font=("Comic Sans MS", 15), wrap="word")
+        text_widget.pack(expand=True, fill="both")
+
+        # Read the contents from readme.txt and insert into the Text widget
+        with open("readme.txt", "r", encoding='utf-8') as file:
+            readme_text = file.read()
+            text_widget.insert("1.0", readme_text)
+
+        # Make the text widget read-only
+        text_widget.configure(state="disabled")
 
     # Function to change the appearance theme of the application
     def change_appearance_mode(self, new_theme):
@@ -92,4 +95,3 @@ if __name__ == "__main__":
     ctk.set_default_color_theme("blue")
     window = MainApplication()
     window.mainloop()
-

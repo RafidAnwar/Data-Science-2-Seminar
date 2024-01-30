@@ -101,7 +101,7 @@ print(f'Predicted CSLB Score = ', predicted_value[0])
 if predicted_value[0] < 40:
   print('\nYour dog is safe! No signs of cognitive dysfunction!')
 elif predicted_value[0] >=40 and predicted_value[0] <=60:
-  print(f'\nThere is a possibility of your dog having symptomps of cognitive dysfunction! Kindly come back after 6 months and answer some follow up questions:\n')
+  print(f'\nThere is a possibility of your dog having symptoms of cognitive dysfunction! Kindly come back after 6 months and answer some follow up questions:\n')
 
 # Assign the data of Follow up questions after 6 months from the gui to variables
 

@@ -39,7 +39,7 @@ def CSLB_SCORE_PREDICTION_ANALYSIS():
             app.after(0, lambda: update_result_label(predicted_value))
 
             # Conditions are met in the prediction, show a follow-up window.
-            if "There is a possibility of your dog having symptomps of cognitive dysfunction! Kindly come back after 6 months and answer some follow up questions:" in predicted_value:
+            if "There is a possibility of your dog having symptoms of cognitive dysfunction! Kindly come back after 6 months and answer some follow up questions:" in predicted_value:
                 app.after(0, show_follow_up_window)
 
         except ValueError:
@@ -76,12 +76,12 @@ def CSLB_SCORE_PREDICTION_ANALYSIS():
             animation_step = 0
             animate_loading_step()
 
-    def update_result_label(text):
+    def update_result_label(predicted_value):
         # Updates the result label with the prediction result.
         nonlocal result_window
-        show_result_window(f" {text}")
+        show_result_window(f" {predicted_value}", result_font=("Comic Sans MS", 15, "bold"), reference_font=("Arial", 12))
 
-    def show_result_window(result_text):
+    def show_result_window(result_text, result_font, reference_font):
         # Displays the prediction result in a new window.
         nonlocal result_window
         # Close the existing result window if it's open
@@ -90,7 +90,7 @@ def CSLB_SCORE_PREDICTION_ANALYSIS():
 
         result_window = ctk.CTkToplevel(app)
         result_window.title("Model predictions")
-        result_window.geometry("1000x300")
+        result_window.geometry("1200x300")
         result_window.attributes('-topmost', True)
         result_window.iconbitmap('dap.ico')
 
@@ -106,12 +106,12 @@ def CSLB_SCORE_PREDICTION_ANALYSIS():
         result_frame.grid_rowconfigure(0, weight=1)
         result_frame.grid_columnconfigure(0, weight=1)
 
-        # Label to display the result
-        result_label = ctk.CTkLabel(result_frame, text=result_text)
+        # Label to display the result with specified font
+        result_label = ctk.CTkLabel(result_frame, text=result_text, font=result_font)
         result_label.grid(row=0, column=0, sticky="nsew")
 
-        # Reference text for the result window
-        label_1 = ctk.CTkLabel(result_frame, text="Reference:", anchor="center", font=("Arial", 14, "bold"))
+        # Reference text label with specified font
+        label_1 = ctk.CTkLabel(result_frame, text="Reference:", anchor="center", font=reference_font)
         label_1.grid(row=1, column=0, sticky="nsew")
 
         # Reference text for the result window
@@ -122,7 +122,7 @@ def CSLB_SCORE_PREDICTION_ANALYSIS():
             The Veterinary Journal, Volume 188, Issue 3,2011,Pages 331-336,ISSN 1090-0233,
             https://doi.org/10.1016/j.tvjl.2010.05.014.
             """
-        reference_label = ctk.CTkLabel(result_frame, text=reference_text,font=("Arial", 12))
+        reference_label = ctk.CTkLabel(result_frame, text=reference_text, font=reference_font)
         reference_label.grid(row=2, column=0, sticky="nsew")
 
 
