@@ -19,7 +19,7 @@ def PAPER_HEALTH_REGRESSION_PART():
         user_choice_1 = user_choice_1_dropdown.get()
 
         # Runs a subprocess to execute the calculation script with the provided arguments.
-        result = subprocess.run(['python', 'paper_health_regression_part.py', user_choice_1, user_choice_2],
+        result = subprocess.run(["pythonw.exe", 'paper_health_regression_part.py', user_choice_1, user_choice_2],
                                 capture_output=True, text=True, encoding='utf-8')
         # Once the subprocess completes, display the result and stop the loading animation.
         display_result(result.stdout.strip(), user_choice_2)

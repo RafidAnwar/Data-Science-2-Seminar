@@ -1,7 +1,6 @@
 import customtkinter as ctk
 import tkinter as tk
 from customtkinter import CTkImage
-from tkinter import messagebox
 from PIL import Image
 from paper_health_regression_part_GUI import PAPER_HEALTH_REGRESSION_PART
 from cslb_score_prediction_gui import CSLB_SCORE_PREDICTION_ANALYSIS
@@ -70,7 +69,7 @@ class MainApplication(ctk.CTk):
         # Create a new top-level window
         readme_window = ctk.CTkToplevel(self)
         readme_window.title("README")
-        readme_window.geometry("600x400")
+        readme_window.geometry("800x600")
         readme_window.attributes('-topmost', True)
 
         # Add a Text widget to the new window
