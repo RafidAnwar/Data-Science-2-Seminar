@@ -31,7 +31,7 @@ def CSLB_SCORE_PREDICTION_ANALYSIS():
             start_loading_animation() # Starts the loading animation.
 
             # Runs a subprocess to execute the prediction model script with the collected data.
-            result = subprocess.run(['python', 'CSLB score prediction.py', *map(str, data)], capture_output=True, text=True)
+            result = subprocess.run(["pythonw.exe", 'CSLB score prediction.py', *map(str, data)], capture_output=True, text=True)
             predicted_value = result.stdout.strip()
             stop_loading_animation() # Stops the loading animation.
 
@@ -155,7 +155,7 @@ def CSLB_SCORE_PREDICTION_ANALYSIS():
 
             # Executes the Python script for follow-up data analysis using subprocess.
             # Passes the collected follow-up data to the script.
-            result_new = subprocess.run(['python', 'CSLB score prediction.py', *map(str, follow_up_data)], capture_output=True, text=True)
+            result_new = subprocess.run(['pythonw.exe', 'CSLB score prediction.py', *map(str, follow_up_data)], capture_output=True, text=True)
             new_predicted_value = result_new.stdout.strip()
 
             # If an existing result window is open, it is closed to display new results.

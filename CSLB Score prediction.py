@@ -118,8 +118,8 @@ elif predicted_value[0] >=40 and predicted_value[0] <=60:
 
 # show the final cognitive dysfunction result
   if predicted_value <50:
-    print("\nNo need to worry! Your dog's actual CSLB score is =",predicted_value," your dog has no signs of cognitive dysfunction!")
+    print("\n NEW UPDATE : \nNo need to worry! Your dog's actual CSLB score is =",predicted_value," your dog has no signs of cognitive dysfunction!")
   else:
-    print(f"\nYour dog's actual CSLB score is =",predicted_value, "He/she has symptoms of cognitive dysfunction! Kindly contact the vet as soon as possible")
+    print(f"\n NEW UPDATE : \nYour dog's actual CSLB score is =",predicted_value, "He/she has symptoms of cognitive dysfunction! Kindly contact the vet as soon as possible")
 else:
   print("\nYour dog has symptoms of cognitive dysfunction! Kindly contact the vet as soon as possible")
